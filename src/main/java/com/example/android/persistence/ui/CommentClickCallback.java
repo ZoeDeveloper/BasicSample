@@ -21,3 +21,4 @@ import com.example.android.persistence.model.Comment;
 public interface CommentClickCallback {
     void onClick(Comment comment);
 }
+

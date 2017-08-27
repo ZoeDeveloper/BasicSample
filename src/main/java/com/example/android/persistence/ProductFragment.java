@@ -36,6 +36,10 @@ import com.example.android.persistence.viewmodel.ProductViewModel;
 
 import java.util.List;
 
+
+/**
+ * This is the detailed view
+ */
 public class ProductFragment extends LifecycleFragment {
 
     private static final String KEY_PRODUCT_ID = "product_id";
@@ -63,6 +67,8 @@ public class ProductFragment extends LifecycleFragment {
             // no-op
 
         }
+
+
     };
 
     @Override

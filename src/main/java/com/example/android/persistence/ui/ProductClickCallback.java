@@ -16,8 +16,14 @@
 
 package com.example.android.persistence.ui;
 
+import android.view.View;
+
 import com.example.android.persistence.model.Product;
 
 public interface ProductClickCallback {
     void onClick(Product product);
+
+    void onClickAddDB(View view);
+
+    void onClickDeleteDB(View v);
 }

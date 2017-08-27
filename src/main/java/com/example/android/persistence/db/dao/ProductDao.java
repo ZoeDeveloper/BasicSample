@@ -32,6 +32,9 @@ public interface ProductDao {
     LiveData<List<ProductEntity>> loadAllProducts();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(ProductEntity products);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<ProductEntity> products);
 
     @Query("select * from products where id = :productId")
@@ -39,4 +42,8 @@ public interface ProductDao {
 
     @Query("select * from products where id = :productId")
     ProductEntity loadProductSync(int productId);
+
+    @Query("DELETE FROM products WHERE id = :productId")
+    void delete(int productId);
+
 }

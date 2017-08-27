@@ -73,9 +73,22 @@ class DatabaseInitUtil {
                 comments.add(comment);
             }
         }
+
     }
 
     private static void insertData(AppDatabase db, List<ProductEntity> products, List<CommentEntity> comments) {
+        db.beginTransaction();
+        try {
+            db.productDao().insertAll(products);
+            db.commentDao().insertAll(comments);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+
+    private static void trimData(AppDatabase db, List<ProductEntity> products, List<CommentEntity> comments) {
         db.beginTransaction();
         try {
             db.productDao().insertAll(products);

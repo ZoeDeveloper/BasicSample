@@ -20,12 +20,14 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.android.persistence.databinding.ListFragmentBinding;
 import com.example.android.persistence.db.entity.ProductEntity;
@@ -36,6 +38,9 @@ import com.example.android.persistence.viewmodel.ProductListViewModel;
 
 import java.util.List;
 
+/**
+ * This is the first view - the list view - where the button is 
+ */
 public class ProductListFragment extends LifecycleFragment {
 
     public static final String TAG = "ProductListViewModel";
@@ -43,6 +48,7 @@ public class ProductListFragment extends LifecycleFragment {
     private ProductAdapter mProductAdapter;
 
     private ListFragmentBinding mBinding;
+    private ProductListViewModel viewModel;
 
     @Nullable
     @Override
@@ -50,8 +56,12 @@ public class ProductListFragment extends LifecycleFragment {
             @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.list_fragment, container, false);
 
+        mBinding.setCallbackDB(mProductClickCallback);
+
         mProductAdapter = new ProductAdapter(mProductClickCallback);
         mBinding.productsList.setAdapter(mProductAdapter);
+
+
 
         return mBinding.getRoot();
     }
@@ -61,10 +71,12 @@ public class ProductListFragment extends LifecycleFragment {
         super.onActivityCreated(savedInstanceState);
         final ProductListViewModel viewModel =
                 ViewModelProviders.of(this).get(ProductListViewModel.class);
-
+        this.viewModel = viewModel;
         subscribeUi(viewModel);
     }
 
+
+    int countInDB = 0;
     private void subscribeUi(ProductListViewModel viewModel) {
         // Update the list when the data changes
         viewModel.getProducts().observe(this, new Observer<List<ProductEntity>>() {
@@ -73,6 +85,7 @@ public class ProductListFragment extends LifecycleFragment {
                 if (myProducts != null) {
                     mBinding.setIsLoading(false);
                     mProductAdapter.setProductList(myProducts);
+                    countInDB = myProducts.size();
                 } else {
                     mBinding.setIsLoading(true);
                 }
@@ -80,13 +93,38 @@ public class ProductListFragment extends LifecycleFragment {
         });
     }
 
+    private void ShowToast(int count) {
+        Context context = getContext();
+        CharSequence text = "Current count is " + count;
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
     private final ProductClickCallback mProductClickCallback = new ProductClickCallback() {
         @Override
         public void onClick(Product product) {
-
+            ShowToast(0);
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                 ((MainActivity) getActivity()).show(product);
             }
+        }
+
+        @Override
+        public void onClickAddDB(View v) {
+            System.out.println("current count " + countInDB);
+            // touching the DB at this point.
+            viewModel.addRandomProduct();
+            ShowToast(countInDB);
+        }
+
+
+        @Override
+        public void onClickDeleteDB(View v) {
+            System.out.println("current count " + countInDB);
+            // touching the DB at this point.
+            viewModel.deleteFirstProduct();
+            ShowToast(countInDB);
         }
     };
 }

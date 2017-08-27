@@ -22,13 +22,34 @@
         <variable
             name="isLoading"
             type="boolean" />
+
+        <variable name="callbackDB"
+            type="com.example.android.persistence.ui.ProductClickCallback"/>
     </data>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cardview_light_background"
         android:orientation="vertical">
+        <!--android:onClick="@{() -> presenter.getDBCount()}"-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> callbackDB.onClickAddDB(v)}"
+                android:text="Add"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> callbackDB.onClickDeleteDB(v)}"
+                android:text="Delete"/>
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/loading_tv"

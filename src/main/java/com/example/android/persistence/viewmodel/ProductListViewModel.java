@@ -22,12 +22,18 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
+import android.os.AsyncTask;
 
+import com.example.android.persistence.db.AppDatabase;
 import com.example.android.persistence.db.DatabaseCreator;
 import com.example.android.persistence.db.entity.ProductEntity;
 
 import java.util.List;
 
+
+/**
+ *
+ */
 public class ProductListViewModel extends AndroidViewModel {
 
     private static final MutableLiveData ABSENT = new MutableLiveData();
@@ -37,6 +43,7 @@ public class ProductListViewModel extends AndroidViewModel {
     }
 
     private final LiveData<List<ProductEntity>> mObservableProducts;
+    private AppDatabase dataBase = null;
 
     public ProductListViewModel(Application application) {
         super(application);
@@ -53,12 +60,37 @@ public class ProductListViewModel extends AndroidViewModel {
                     return ABSENT;
                 } else {
                     //noinspection ConstantConditions
-                    return databaseCreator.getDatabase().productDao().loadAllProducts();
+                    dataBase = databaseCreator.getDatabase();
+                    return dataBase.productDao().loadAllProducts();
                 }
             }
         });
 
         databaseCreator.createDb(this.getApplication());
+    }
+
+    public void addRandomProduct() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProductEntity item = mObservableProducts.getValue().get(0);
+                int id = (int)(Math.random()*100);
+                System.out.println("id " + id);
+                item.setId(id);
+                item.setDescription(item.getDescription() + "\n with an ID of " + id);
+                dataBase.productDao().insert(item);
+            }
+        });
+    }
+
+    public void deleteFirstProduct() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProductEntity item = mObservableProducts.getValue().get(mObservableProducts.getValue().size() - 1);
+                dataBase.productDao().delete(item.getId());
+            }
+        });
     }
 
     /**

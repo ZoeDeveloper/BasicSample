@@ -16,10 +16,10 @@
 
 package com.example.android.persistence;
 
+import android.arch.lifecycle.LifecycleActivity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import android.arch.lifecycle.LifecycleActivity;
 import com.example.android.persistence.model.Product;
 
 public class MainActivity extends LifecycleActivity {
@@ -37,7 +37,9 @@ public class MainActivity extends LifecycleActivity {
         }
     }
 
-    /** Shows the product detail fragment */
+    /**
+     * Shows the product detail fragment
+     */
     public void show(Product product) {
 
         ProductFragment productFragment = ProductFragment.forProduct(product.getId());
@@ -48,4 +50,9 @@ public class MainActivity extends LifecycleActivity {
                 .replace(R.id.fragment_container,
                         productFragment, null).commit();
     }
+
+
+
+
+
 }
