@@ -24,9 +24,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Intent;
 import android.databinding.ObservableField;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.example.android.persistence.MainActivity;
+import com.example.android.persistence.db.AppDatabase;
 import com.example.android.persistence.db.DatabaseCreator;
 import com.example.android.persistence.db.entity.CommentEntity;
 import com.example.android.persistence.db.entity.ProductEntity;
@@ -50,6 +54,7 @@ public class ProductViewModel extends AndroidViewModel {
     public ObservableField<ProductEntity> product = new ObservableField<>();
 
     private final int mProductId;
+    private AppDatabase dataBase = null;
 
     private final LiveData<List<CommentEntity>> mObservableComments;
 
@@ -81,7 +86,8 @@ public class ProductViewModel extends AndroidViewModel {
                     return ABSENT;
                 } else {
                     //noinspection ConstantConditions
-                    return databaseCreator.getDatabase().productDao().loadProduct(mProductId);
+                    dataBase = databaseCreator.getDatabase();
+                    return dataBase.productDao().loadProduct(mProductId);
                 }
             }
         });
@@ -102,6 +108,20 @@ public class ProductViewModel extends AndroidViewModel {
 
     public void setProduct(ProductEntity product) {
         this.product.set(product);
+    }
+
+    public void deleteProduct() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                ProductEntity item = mObservableProduct.getValue();
+                dataBase.productDao().delete(item.getId());
+            }
+        });
+        Intent startIntent = new Intent(this.getApplication().getBaseContext(), MainActivity.class);
+        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.getApplication().getBaseContext().startActivity(startIntent);
+
     }
 
     /**

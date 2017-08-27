@@ -46,6 +46,7 @@ android {
 
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:' + rootProject.supportLibVersion;
@@ -53,6 +54,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion;
     compile 'android.arch.lifecycle:extensions:' + rootProject.archLifecycleVersion;
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion;
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion;
     annotationProcessor "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion;
 
@@ -63,7 +65,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:' + rootProject.rulesVersion;
     androidTestCompile 'com.android.support.test.espresso:espresso-core:' + rootProject.espressoVersion;
 
-    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2'){
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude module: 'recyclerview-v7'

@@ -47,6 +47,7 @@ public class ProductFragment extends LifecycleFragment {
     private ProductFragmentBinding mBinding;
 
     private CommentAdapter mCommentAdapter;
+    private ProductViewModel proViewModel;
 
     @Nullable
     @Override
@@ -55,6 +56,7 @@ public class ProductFragment extends LifecycleFragment {
         // Inflate this data binding layout
         mBinding = DataBindingUtil.inflate(inflater, R.layout.product_fragment, container, false);
 
+        mBinding.setProductFrag(mCommentClickCallback);
         // Create and set the adapter for the RecyclerView.
         mCommentAdapter = new CommentAdapter(mCommentClickCallback);
         mBinding.commentList.setAdapter(mCommentAdapter);
@@ -66,6 +68,12 @@ public class ProductFragment extends LifecycleFragment {
         public void onClick(Comment comment) {
             // no-op
 
+        }
+
+        @Override
+        public void onClickDB(View view) {
+            System.out.println("Worked");
+            proViewModel.deleteProduct();
         }
 
 
@@ -81,6 +89,8 @@ public class ProductFragment extends LifecycleFragment {
                 .get(ProductViewModel.class);
 
         mBinding.setProductViewModel(model);
+
+        proViewModel = model;
 
         subscribeToModel(model);
     }

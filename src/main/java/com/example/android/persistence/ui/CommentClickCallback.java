@@ -16,9 +16,13 @@
 
 package com.example.android.persistence.ui;
 
+import android.view.View;
+
 import com.example.android.persistence.model.Comment;
 
 public interface CommentClickCallback {
     void onClick(Comment comment);
+
+    void onClickDB(View view);
 }
 

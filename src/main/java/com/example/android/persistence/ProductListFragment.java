@@ -21,6 +21,7 @@ import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,7 +49,7 @@ public class ProductListFragment extends LifecycleFragment {
     private ProductAdapter mProductAdapter;
 
     private ListFragmentBinding mBinding;
-    private ProductListViewModel viewModel;
+    private ProductListViewModel proViewModel;
 
     @Nullable
     @Override
@@ -71,7 +72,7 @@ public class ProductListFragment extends LifecycleFragment {
         super.onActivityCreated(savedInstanceState);
         final ProductListViewModel viewModel =
                 ViewModelProviders.of(this).get(ProductListViewModel.class);
-        this.viewModel = viewModel;
+        this.proViewModel = viewModel;
         subscribeUi(viewModel);
     }
 
@@ -114,7 +115,7 @@ public class ProductListFragment extends LifecycleFragment {
         public void onClickAddDB(View v) {
             System.out.println("current count " + countInDB);
             // touching the DB at this point.
-            viewModel.addRandomProduct();
+            proViewModel.addRandomProduct();
             ShowToast(countInDB);
         }
 
@@ -123,8 +124,14 @@ public class ProductListFragment extends LifecycleFragment {
         public void onClickDeleteDB(View v) {
             System.out.println("current count " + countInDB);
             // touching the DB at this point.
-            viewModel.deleteFirstProduct();
+            proViewModel.deleteFirstProduct();
             ShowToast(countInDB);
+        }
+
+        @Override
+        public void onClickViewDB(View view) {
+            Intent intent = new Intent(getActivity(), AddItemActivity.class);
+            startActivity(intent);
         }
     };
 }

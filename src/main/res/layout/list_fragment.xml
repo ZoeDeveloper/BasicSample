@@ -48,6 +48,11 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> callbackDB.onClickDeleteDB(v)}"
                 android:text="Delete"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> callbackDB.onClickViewDB(v)}"
+                android:text="view"/>
         </LinearLayout>
 
 

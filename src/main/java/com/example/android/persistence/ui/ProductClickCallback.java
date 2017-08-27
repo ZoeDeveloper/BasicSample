@@ -26,4 +26,6 @@ public interface ProductClickCallback {
     void onClickAddDB(View view);
 
     void onClickDeleteDB(View v);
+
+    void onClickViewDB(View view);
 }
