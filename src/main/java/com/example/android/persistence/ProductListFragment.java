@@ -130,7 +130,7 @@ public class ProductListFragment extends LifecycleFragment {
 
         @Override
         public void onClickViewDB(View view) {
-            Intent intent = new Intent(getActivity(), AddItemActivity.class);
+            Intent intent = new Intent(getActivity(), ShowItemActivity.class);
             startActivity(intent);
         }
     };

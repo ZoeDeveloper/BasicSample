@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.android.persistence.ShowItemActivity"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+            <variable
+                name="isLoading"
+                type="boolean" />
+
+            <variable name="callbackDB"
+                type="com.example.android.persistence.ui.ProductClickCallback"/>
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/loading_tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/loading_products"
+            android:textAlignment="center"
+            app:visibleGone="@{!isLoading}"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/products_list"
+            android:contentDescription="@string/cd_products_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            app:visibleGone="@{!isLoading}"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
